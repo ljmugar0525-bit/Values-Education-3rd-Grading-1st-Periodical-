@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Values Education ( 3rd Grading 1st Periodical Exam )</title>
+
+<style>
+@page {
+    size: letter;
+    margin: 0.7in;
+}
+
+body{
+    font-family:"Comic Sans MS", Arial, sans-serif;
+    background:#eef7ff;
+    margin:0;
+    padding:20px;
+}
+
+.container{
+    max-width:900px;
+    margin:auto;
+    background:#fff;
+    padding:25px;
+    border-radius:20px;
+    box-shadow:0 8px 20px rgba(0,0,0,.15);
+}
+
+h1{text-align:center;color:#ff9800;}
+.subtitle{text-align:center;font-weight:bold;margin-bottom:15px;}
+
+.instructions{
+    background:#fff8dc;
+    border:3px dashed #ffca28;
+    padding:15px;
+    border-radius:15px;
+    font-size:17px;
+    margin-bottom:20px;
+}
+
+.student-box{
+    text-align:center;
+    margin-bottom:20px;
+}
+
+.student-box input{
+    padding:10px;
+    font-size:16px;
+    border-radius:10px;
+    border:2px solid #03a9f4;
+    width:300px;
+}
+
+.section-title{
+    margin-top:30px;
+    padding:10px;
+    border-radius:12px;
+    color:#fff;
+    font-size:20px;
+}
+
+.question{
+    background:#fffdf7;
+    border-left:6px solid #ffca28;
+    padding:12px;
+    border-radius:0 12px 12px 0;
+    margin:15px 0;
+}
+
+.question b{
+    display:block;
+    margin-bottom:8px;
+    font-size:17px;
+}
+
+.options{
+    display:flex;
+    gap:12px;
+    flex-wrap:wrap;
+}
+
+input[type=radio]{display:none;}
+
+.bubble{
+    padding:8px 18px;
+    border-radius:40px;
+    background:#fff;
+    border:2px solid #ffb300;
+    cursor:pointer;
+    font-weight:bold;
+    font-size:15px;
+    transition:.25s;
+}
+
+input[type=radio]:checked + .bubble{
+    background:#ffb300;
+    color:#fff;
+    transform:scale(1.05);
+}
+
+.submit-btn,.print-btn{
+    display:block;
+    margin:30px auto;
+    padding:14px 45px;
+    font-size:18px;
+    border-radius:50px;
+    border:none;
+    cursor:pointer;
+    font-weight:bold;
+}
+
+.submit-btn{background:#4caf50;color:white;}
+.print-btn{background:#2196f3;color:white;}
+
+.submit-btn:hover{background:#43a047;}
+.print-btn:hover{background:#1e88e5;}
+
+/* RESULT PAGE */
+#resultPage{
+    display:none;
+    page-break-before:always;
+    border:6px solid #ffeb3b;
+    padding:30px;
+    border-radius:18px;
+}
+
+.result-header{
+    text-align:center;
+    margin-bottom:15px;
+}
+
+.result-header h2{margin:0;color:#ff9800;}
+
+.result-info{
+    font-size:18px;
+    margin:10px 0;
+    font-weight:bold;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+    margin-top:15px;
+    font-size:15px;
+}
+
+th,td{
+    border:1px solid #999;
+    padding:8px;
+    text-align:center;
+}
+
+th{background:#fff59d;}
+
+.signature-area{
+    margin-top:40px;
+    display:flex;
+    justify-content:space-between;
+    font-size:15px;
+}
+
+@media print{
+    body{background:#fff;}
+    .submit-btn,.print-btn{display:none;}
+}
+</style>
+</head>
+
+<body>
+
+<!-- EXAM PAGE -->
+<div class="container" id="examPage">
+
+<h1>🌟 Values Education</h1>
+<p class="subtitle">( 3rd Grading 1st Periodical Exam )</p>
+
+<div class="instructions">
+📌 <b>Instructions:</b><br>
+• Read each sentence carefully 👀<br>
+• Click the bubble that shows good behavior 🎈<br>
+• Answer honestly and do your best 🌈
+</div>
+
+<div class="student-box">
+<b>Student Name:</b><br>
+<input type="text" id="studentName" placeholder="Enter Full Name">
+</div>
+
+<div id="questions"></div>
+
+<button class="submit-btn" onclick="submitExam()">🚀 SUBMIT MY EXAM 🚀</button>
+</div>
+
+<!-- RESULT PAGE -->
+<div class="container" id="resultPage">
+
+<div class="result-header">
+<h2>VALUES EDUCATION – RESULT</h2>
+<p>3rd Grading | 1st Periodical Exam</p>
+</div>
+
+<div class="result-info">
+Student Name: <span id="rName"></span><br>
+Final Score: <span id="rScore"></span> / 25
+</div>
+
+<table>
+<thead>
+<tr>
+<th>No.</th>
+<th>Question</th>
+<th>Student Answer</th>
+<th>Correct Answer</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody id="resultTable"></tbody>
+</table>
+
+<!-- SIGNATURE + DATE -->
+<div class="signature-area">
+<div>
+_______________________________<br>
+   <b>Teacher’s Signature</b>
+</div>
+
+<div style="text-align:right;">
+______________________________<br>
+     <b>Date Recorded</b>
+</div>
+</div>
+
+<button class="print-btn" onclick="window.print()">🖨️ PRINT RESULT</button>
+
+</div>
+
+<script>
+const questions=[
+["I color slowly to stay inside the lines.","Yes"],
+["I rush my work to finish fast.","No"],
+["I check my work before passing.","Yes"],
+["I listen to instructions first.","Yes"],
+["I leave my work unfinished.","No"],
+["I raise my hand to speak.","Yes"],
+["I practice reading at home.","Yes"],
+["I forget my homework often.","No"],
+["I listen to my teacher.","Yes"],
+["I try my best in school.","Yes"],
+["I put toys back after playing.","Yes"],
+["I tear books.","No"],
+["I throw trash in the bin.","Yes"],
+["I waste water.","No"],
+["I help clean the classroom.","Yes"],
+["I share my crayons.","Yes"],
+["I break school things.","No"],
+["I care for plants.","Yes"],
+["I keep my bag neat.","Yes"],
+["I respect school property.","Yes"],
+["I help my classmates.","Yes"],
+["I follow school rules.","Yes"],
+["I am kind to others.","Yes"],
+["I take care of my books.","Yes"],
+["I am a responsible pupil.","Yes"]
+];
+
+const qDiv=document.getElementById("questions");
+questions.forEach((q,i)=>{
+qDiv.innerHTML+=`
+<div class="question">
+<b>${i+1}. ${q[0]}</b>
+<div class="options">
+<label>
+<input type="radio" name="q${i}" value="Yes">
+<span class="bubble"> Yes!</span>
+</label>
+<label>
+<input type="radio" name="q${i}" value="No">
+<span class="bubble"> No</span>
+</label>
+</div>
+</div>`;
+});
+
+function submitExam(){
+let score=0;
+let rows="";
+questions.forEach((q,i)=>{
+let sel=document.querySelector(`input[name="q${i}"]:checked`);
+let ans=sel?sel.value:"—";
+let ok=ans===q[1];
+if(ok)score++;
+rows+=`
+<tr>
+<td>${i+1}</td>
+<td style="text-align:left;">${q[0]}</td>
+<td>${ans}</td>
+<td>${q[1]}</td>
+<td>${ok?"✔":"✘"}</td>
+</tr>`;
+});
+
+document.getElementById("examPage").style.display="none";
+document.getElementById("resultPage").style.display="block";
+document.getElementById("rName").innerText=document.getElementById("studentName").value || "STUDENT";
+document.getElementById("rScore").innerText=score;
+document.getElementById("resultTable").innerHTML=rows;
+}
+</script>
+
+</body>
+</html>
